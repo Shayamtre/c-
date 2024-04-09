@@ -1,0 +1,85 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct Item {
+    string name;
+    int quantity;
+    double price;
+};
+
+class Inventory {
+private:
+    vector<Item> items;
+
+public:
+    void addItem(const string& name, int quantity, double price) {
+        Item newItem = {name, quantity, price};
+        items.push_back(newItem);
+    }
+
+    void displayInventory() {
+        if (items.empty()) {
+            cout << "Inventory is empty." << endl;
+            return;
+        }
+
+        cout << "Inventory:" << endl;
+        cout << "----------------------------------------------" << endl;
+        cout << "Name\t\tQuantity\tPrice" << endl;
+        cout << "----------------------------------------------" << endl;
+        for (const auto& item : items) {
+            cout << item.name << "\t\t" << item.quantity << "\t\t$" << item.price << endl;
+        }
+        cout << "----------------------------------------------" << endl;
+    }
+
+    Item* findItem(const string& name) {
+        for (auto& item : items) {
+            if (item.name == name) {
+                return &item;
+            }
+        }
+        return nullptr;
+    }
+
+    void updateItemQuantity(const string& name, int newQuantity) {
+        Item* item = findItem(name);
+        if (item) {
+            item->quantity = newQuantity;
+            cout << "Quantity updated successfully." << endl;
+        } else {
+            cout << "Item not found." << endl;
+        }
+    }
+
+    void updateItemPrice(const string& name, double newPrice) {
+        Item* item = findItem(name);
+        if (item) {
+            item->price = newPrice;
+            cout << "Price updated successfully." << endl;
+        } else {
+            cout << "Item not found." << endl;
+        }
+    }
+};
+
+int main() {
+    Inventory inventory;
+
+    inventory.addItem("Apple", 10, 1.99);
+    inventory.addItem("Banana", 20, 0.99);
+    inventory.addItem("Orange", 15, 1.49);
+
+    inventory.displayInventory();
+
+    inventory.updateItemQuantity("Apple", 5);
+    inventory.displayInventory();
+
+    inventory.updateItemPrice("Banana", 1.29);
+    inventory.displayInventory();
+
+    return 0;
+}
